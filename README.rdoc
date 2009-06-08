@@ -1,0 +1,7 @@
+= potion-extra
+
+Description goes here.
+
+== Copyright
+
+Copyright (c) 2009 dreamcat4. See LICENSE for details.
