@@ -1,4 +1,2 @@
---- 
-vendor/gems/libxml-bindings: 
-  branch: master
-  url: git@github.com:dreamcat4/libxml-bindings.git
+--- {}
+
