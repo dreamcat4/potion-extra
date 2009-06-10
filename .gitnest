@@ -1,6 +1,6 @@
 --- 
 vendor/gems-src/geokit: 
-  branch: dc4-all
+  branch: dc4-potion
   url: git@github.com:dreamcat4/geokit-gem.git
 vendor/gems-src/libxml-bindings: 
   branch: master
@@ -12,5 +12,5 @@ vendor/plugins/acts_as_quickbooks_model:
   branch: master
   url: git@github.com:dreamcat4/acts_as_quickbooks_model.git
 vendor/plugins/geokit-rails: 
-  branch: dc4-all
+  branch: dc4-potion
   url: git@github.com:dreamcat4/geokit-rails.git
