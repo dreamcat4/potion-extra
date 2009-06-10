@@ -5,3 +5,4 @@ rdoc
 pkg
 vendor/gems-src/libxml-bindings
 vendor/gems-src/sinatra
+vendor/plugins/acts_as_quickbooks_model

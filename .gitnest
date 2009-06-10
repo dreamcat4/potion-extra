@@ -5,3 +5,6 @@ vendor/gems-src/libxml-bindings:
 vendor/gems-src/sinatra: 
   branch: master
   url: git://github.com/sinatra/sinatra.git
+vendor/plugins/acts_as_quickbooks_model: 
+  branch: master
+  url: git@github.com:dreamcat4/acts_as_quickbooks_model.git
