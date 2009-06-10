@@ -1,0 +1,28 @@
+<QBWCXML>
+  <AppName>Potion Store</AppName>
+
+  <!-- AppId: `echo "potionstore" | md5` -->
+  <AppID>55af31886e0513d0ddcc12c62eb39950</AppID>
+
+  <!-- Modify hosts file (c:\WINDOWS\system32\drivers\etc\hosts) -->
+  <!-- # ipconfig | grep -i "Default Gateway" -->
+  <!--  echo "192.168.62.2 localhost1" >> c:\WINDOWS\system32\drivers\etc\hosts -->
+  <AppURL>http://localhost1:3001/qbwc/api</AppURL>
+  <!-- <AppURL>https://secure.dreamcatfour.ath.cx/qbwc/api</AppURL> -->
+
+  <AppDescription>Online e-store, web commerce solution http://www.potionfactory.com/potionstore</AppDescription>
+
+  <AppSupport>http://localhost1:4567/qbwc/api</AppSupport>
+  <!-- <AppSupport>http://idnforums.intuit.com/</AppSupport> -->
+
+  <!-- UserName: `echo "potion_extra" | md5` -->
+  <UserName>bd3e861f6715e06dc9cd0e2c683e91b0</UserName>
+
+  <!-- OwnerID and FileID should be unique windows (as in windows registry) GUIDs -->
+  <!-- GUID generator at: http://www.famkruithof.net/uuid/uuidgen -->
+  <OwnerID>{011e7e7f-5aa2-48f5-8cfc-7a1d28ac549c}</OwnerID>
+  <FileID>{f1b5c26f-15ec-4e64-afa4-92313e88bc0c}</FileID>
+
+  <QBType>QBFS</QBType>
+  <Style>Document</Style>
+</QBWCXML>
