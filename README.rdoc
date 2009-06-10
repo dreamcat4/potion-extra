@@ -1,6 +1,6 @@
 = potion-extra
 
-Description goes here.
+Dreamcat4's hacks, fixes and other personal customizations to potionstore. If you would like to check out potionstore, its recommended to just follow the official upstream repository maintained by Andy Kim.
 
 == Copyright
 
