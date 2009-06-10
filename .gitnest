@@ -1,4 +1,7 @@
 --- 
+vendor/gems-src/geokit: 
+  branch: master
+  url: git@github.com:dreamcat4/geokit-gem.git
 vendor/gems-src/libxml-bindings: 
   branch: master
   url: git@github.com:dreamcat4/libxml-bindings.git
