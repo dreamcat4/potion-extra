@@ -7,3 +7,4 @@ vendor/gems-src/libxml-bindings
 vendor/gems-src/sinatra
 vendor/plugins/acts_as_quickbooks_model
 vendor/gems-src/geokit
+vendor/plugins/geokit-rails
