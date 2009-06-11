@@ -1,5 +1,5 @@
 <QBWCXML>
-  <AppName>Potion Store</AppName>
+  <AppName>Potion Store - Localhost</AppName>
 
   <!-- AppId: `echo "potionstore" | md5` -->
   <AppID>55af31886e0513d0ddcc12c62eb39950</AppID>
@@ -12,7 +12,7 @@
 
   <AppDescription>Online e-store, web commerce solution http://www.potionfactory.com/potionstore</AppDescription>
 
-  <AppSupport>http://localhost1:4567/qbwc/api</AppSupport>
+  <AppSupport>http://localhost1:3001/qbwc/api</AppSupport>
   <!-- <AppSupport>http://idnforums.intuit.com/</AppSupport> -->
 
   <!-- UserName: `echo "potion_extra" | md5` -->
