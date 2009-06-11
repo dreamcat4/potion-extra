@@ -11,6 +11,9 @@ vendor/gems-src/sinatra:
 vendor/plugins/acts_as_quickbooks_model: 
   branch: master
   url: git@github.com:dreamcat4/acts_as_quickbooks_model.git
+vendor/plugins/dependencies: 
+  branch: master
+  url: git@github.com:dreamcat4/dependencies.git
 vendor/plugins/geokit-rails: 
   branch: dc4-potion
   url: git@github.com:dreamcat4/geokit-rails.git
