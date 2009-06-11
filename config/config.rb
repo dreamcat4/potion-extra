@@ -1,5 +1,4 @@
-
-PE_PATH="#{File.join(File.dirname(__FILE__), '../')}"
+PE_PATH="#{File.expand_path('../',File.dirname(__FILE__))}"
 
 module PotionExtra
 
