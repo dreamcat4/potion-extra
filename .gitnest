@@ -17,3 +17,6 @@ vendor/plugins/dependencies:
 vendor/plugins/geokit-rails: 
   branch: dc4-potion
   url: git@github.com:dreamcat4/geokit-rails.git
+vendor/plugins/quickbooks_integration_plugin: 
+  branch: master
+  url: git://github.com/zackchandler/quickbooks_integration_plugin.git
