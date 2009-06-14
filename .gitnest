@@ -17,6 +17,9 @@ vendor/plugins/acts_as_quickbooks_model:
 vendor/plugins/dependencies: 
   branch: master
   url: git@github.com:dreamcat4/dependencies.git
+vendor/plugins/generates_uuid: 
+  branch: master
+  url: git://github.com/latimes/generates_uuid.git
 vendor/plugins/geokit-rails: 
   branch: dc4-potion
   url: git@github.com:dreamcat4/geokit-rails.git
