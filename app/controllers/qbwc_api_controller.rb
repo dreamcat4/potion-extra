@@ -54,7 +54,7 @@ class QbwcApiController < ApplicationController
   end
 
   get '/qbwc/api' do
-    return "PotionStore Extra - authenticate?"
+    erb :apiWelcome
   end
 
   post '/qbwc/api' do
@@ -128,6 +128,7 @@ class QbwcApiController < ApplicationController
 
       req.each do |node|
         puts node.name
+        puts "node.inner_xml"
         puts node.inner_xml
         
         if node.name == "strUserName"
@@ -146,11 +147,15 @@ class QbwcApiController < ApplicationController
         @message = 'none'
         @seconds_until_next_update = "#{5}"
         @seconds_between_runs = "#{24*60*60}"
+        puts "erb :authenticate"
+        puts "#{erb :authenticate}"
+        erb :authenticate
       else
         # content_type ''
         ""
+        # erb :authenticate
+        erb :connectionError
       end
-      erb :authenticate
       
     when 'sendRequestXML'
       @qbxml = <<-XML
