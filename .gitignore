@@ -10,3 +10,4 @@ vendor/gems-src/geokit
 vendor/plugins/geokit-rails
 vendor/plugins/dependencies
 vendor/plugins/quickbooks_integration_plugin
+vendor/gems/uuidtools
