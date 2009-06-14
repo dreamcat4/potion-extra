@@ -142,20 +142,24 @@ class QbwcApiController < ApplicationController
       if(authenticated)
         puts "...authenticated"
         # @token = 'abc123'
-        @token = username      
+        # @token = username
+        
+        @token = guid
         # @message = ''
-        @message = 'none'
-        @seconds_until_next_update = "#{5}"
-        @seconds_between_runs = "#{24*60*60}"
-        puts "erb :authenticate"
-        puts "#{erb :authenticate}"
-        erb :authenticate
+        # @message = 'none'
+        
+        # @rsp = ""      # Use current company file
+        # @rsp = "company_file" # Use this named company file
+        @rsp = "none"  # No further response / no further action required
       else
-        # content_type ''
-        ""
-        # erb :authenticate
-        erb :connectionError
+        @rsp = "nvu"   # Not valid user
+        # erb :connectionError
       end
+      @seconds_until_next_update = "#{5}"
+      @seconds_between_runs = "#{24*60*60}"
+      puts "erb :authenticate"
+      puts "#{erb :authenticate}"
+      erb :authenticate
       
     when 'sendRequestXML'
       @qbxml = <<-XML
