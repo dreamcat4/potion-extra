@@ -139,12 +139,13 @@ class QbwcApiController < ApplicationController
         end
       end
       
-      @uuid = UUID.md5_create(UUID_DNS_NAMESPACE, "secure.dreamcatfour.ath.cx")
+      # @uuid = UUID.md5_create(UUID_DNS_NAMESPACE, "secure.dreamcatfour.ath.cx")
       # @uuid = UUID.sha1_create(UUID_DNS_NAMESPACE, "secure.dreamcatfour.ath.cx")
       # @uuid = UUID.timestamp_create
       # @uuid = UUID.random_create
-      @token = @uuid.to_s
+      # @token = @uuid.to_s
       
+      @token = "{011e7e7f-5aa2-48f5-8cfc-7a1d28ac549c}"
       if(authenticated)
         puts "...authenticated"        
         # @message = ''
