@@ -138,20 +138,22 @@ class QbwcApiController < ApplicationController
           authenticated = false unless password == node.inner_xml
         end
       end
-            
+      
+      @uuid = UUID.md5_create(UUID_DNS_NAMESPACE, "secure.dreamcatfour.ath.cx")
+      # @uuid = UUID.sha1_create(UUID_DNS_NAMESPACE, "secure.dreamcatfour.ath.cx")
+      # @uuid = UUID.timestamp_create
+      # @uuid = UUID.random_create
+      @token = @uuid.to_s
+      
       if(authenticated)
-        puts "...authenticated"
-        # @token = 'abc123'
-        # @token = username
-        
-        @token = guid
+        puts "...authenticated"        
         # @message = ''
         # @message = 'none'
-        
         # @rsp = ""      # Use current company file
         # @rsp = "company_file" # Use this named company file
         @rsp = "none"  # No further response / no further action required
       else
+        puts "...not valid user"
         @rsp = "nvu"   # Not valid user
         # erb :connectionError
       end
