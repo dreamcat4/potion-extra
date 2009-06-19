@@ -54,11 +54,13 @@ class QbwcApiController < ApplicationController
   end
 
   get '/qbwc/api' do
+    content_type 'text/xml'
     erb :apiWelcome
   end
 
   post '/qbwc/api' do
-    content_type 'text/xml'
+    # content_type 'text/xml'
+    response['Content-Type'] = ' text/xml'
     puts ""
     xml_str = request.body.read
     # My source document is:
@@ -66,7 +68,8 @@ class QbwcApiController < ApplicationController
     # <document xmlns:test="http://www.test.org">
     # <test:foo>Element foo with namespace test</test:foo>
     # <document>
-    
+    puts "response.headers = "
+    puts response.headers
     # puts xml_str
     # <?xml version="1.0" encoding="utf-8"?>
     # <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" \
@@ -92,8 +95,11 @@ class QbwcApiController < ApplicationController
 
     case api_call
     when 'serverVersion'
+      # @version = "Server Version"
+      # puts "#{erb :serverVersion}"
       erb :serverVersion
     when 'clientVersion'
+      # puts "#{erb :clientVersion}"
       erb :clientVersion
     when 'authenticate'
       username = "bd3e861f6715e06dc9cd0e2c683e91b0" # echo "potion_extra" | md5
@@ -148,11 +154,9 @@ class QbwcApiController < ApplicationController
       @token = "{011e7e7f-5aa2-48f5-8cfc-7a1d28ac549c}"
       if(authenticated)
         puts "...authenticated"        
-        # @message = ''
-        # @message = 'none'
-        # @rsp = ""      # Use current company file
+        @rsp = ""      # Use current company file
         # @rsp = "company_file" # Use this named company file
-        @rsp = "none"  # No further response / no further action required
+        # @rsp = "none"  # No further response / no further action required
       else
         puts "...not valid user"
         @rsp = "nvu"   # Not valid user

@@ -12,6 +12,7 @@ module PotionExtra
       # config.gem "geokit"
       # config.gem "sinatra"
       config.gem "libxml-bindings"
+      config.gem "uuidtools"
 
     end
   end
