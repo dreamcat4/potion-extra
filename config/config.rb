@@ -9,8 +9,8 @@ module PotionExtra
       config.plugin_paths = ["#{PE_PATH}/vendor/plugins","#{RAILS_ROOT}/vendor/plugins"]
       config.gem_paths = ["#{PE_PATH}/vendor/gems"]
 
-      # config.gem "geokit"
-      # config.gem "sinatra"
+      config.gem "geokit"
+      config.gem "sinatra"
       config.gem "libxml-bindings"
       config.gem "uuidtools"
 
