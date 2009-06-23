@@ -59,18 +59,11 @@ class QbwcApiController < ApplicationController
   end
 
   post '/qbwc/api' do
-    # content_type 'text/xml'
-    response['Content-Type'] = ' text/xml'
+    content_type 'text/xml'
+    puts "=="
     puts ""
     xml_str = request.body.read
-    # My source document is:
-    # <?xml version="1.0"?>
-    # <document xmlns:test="http://www.test.org">
-    # <test:foo>Element foo with namespace test</test:foo>
-    # <document>
-    puts "response.headers = "
-    puts response.headers
-    # puts xml_str
+    puts xml_str
     # <?xml version="1.0" encoding="utf-8"?>
     # <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" \
     #                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  \
@@ -97,10 +90,10 @@ class QbwcApiController < ApplicationController
     when 'serverVersion'
       # @version = "Server Version"
       # puts "#{erb :serverVersion}"
-      erb :serverVersion
+      return erb :serverVersion
     when 'clientVersion'
       # puts "#{erb :clientVersion}"
-      erb :clientVersion
+      return erb :clientVersion
     when 'authenticate'
       username = "bd3e861f6715e06dc9cd0e2c683e91b0" # echo "potion_extra" | md5
       password = "25984616630fa720601a9daffde01a3f" # echo "wordpass" | md5
@@ -166,7 +159,7 @@ class QbwcApiController < ApplicationController
       @seconds_between_runs = "#{24*60*60}"
       puts "erb :authenticate"
       puts "#{erb :authenticate}"
-      erb :authenticate
+      return erb :authenticate
       
     when 'sendRequestXML'
       @qbxml = <<-XML
@@ -181,26 +174,25 @@ class QbwcApiController < ApplicationController
     </QBXMLMsgsRq>
   </QBXML>
   XML
-      erb :sendRequestXML
+      return erb :sendRequestXML
     when 'receiveResponseXML'
       (doc/'CustomerRet').each do |node|
         puts "Customer: #{node.innerText.strip}"
       end
       @result = 100
-      erb :receiveResponseXML
+      return erb :receiveResponseXML
     when 'getLastError'
       @message = 'An error occurred'
-      erb :getLastError
+      return erb :getLastError
     when 'connectionError'
       @message = 'done'
-      erb :connectionError
+      return erb :connectionError
     when 'closeConnection'
       @message = 'OK'
-      erb :closeConnection
+      return erb :closeConnection
     else
       ''
     end
-    puts "=="
     
   end
 
