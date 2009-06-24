@@ -2,7 +2,9 @@
 # require 'sinatra'
 require 'hpricot'
 require "libxml-bindings"
-require 'fast_xs' # http server - "fast escaping" ?
+require 'fast_xs'
+require 'fast_xs_extra'
+require 'uuidtools'
 
 # PE_PATH="#{RAILS_ROOT}/vendor/plugins/potion_extra"
 set :views, "#{PE_PATH}/app/views/sinatra/qbwc_api"
@@ -63,7 +65,8 @@ class QbwcApiController < ApplicationController
     puts "=="
     puts ""
     xml_str = request.body.read
-    puts xml_str
+    # puts xml_str
+
     # <?xml version="1.0" encoding="utf-8"?>
     # <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" \
     #                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  \
@@ -81,10 +84,10 @@ class QbwcApiController < ApplicationController
     req = xml.at("/soap:Envelope/soap:Body").first
     api_call = req.name
 
-    puts ""
-    puts "========== #{api_call}  =========="
-    puts xml.at("/soap:Envelope/soap:Body").first
-    puts "=="
+    # puts ""
+    # puts "========== #{api_call}  =========="
+    # puts xml.at("/soap:Envelope/soap:Body").first
+    # puts "=="
 
     case api_call
     when 'serverVersion'
@@ -95,6 +98,10 @@ class QbwcApiController < ApplicationController
       # puts "#{erb :clientVersion}"
       return erb :clientVersion
     when 'authenticate'
+      puts ""
+      puts "========== #{api_call}  =========="
+      # puts xml.at("/soap:Envelope/soap:Body").first
+      puts "=="
       username = "bd3e861f6715e06dc9cd0e2c683e91b0" # echo "potion_extra" | md5
       password = "25984616630fa720601a9daffde01a3f" # echo "wordpass" | md5
 
@@ -126,25 +133,27 @@ class QbwcApiController < ApplicationController
       authenticated = true
 
       req.each do |node|
-        puts node.name
-        puts "node.inner_xml"
-        puts node.inner_xml
+        # puts node.name
+        # puts "node.inner_xml"
+        # puts node.inner_xml
         
         if node.name == "strUserName"
+          puts node.name
+          puts node.inner_xml
           authenticated = false unless username == node.inner_xml
         end
         if node.name == "strPassword"
+          puts node.name
+          puts node.inner_xml
           authenticated = false unless password == node.inner_xml
         end
       end
       
-      # @uuid = UUID.md5_create(UUID_DNS_NAMESPACE, "secure.dreamcatfour.ath.cx")
-      # @uuid = UUID.sha1_create(UUID_DNS_NAMESPACE, "secure.dreamcatfour.ath.cx")
-      # @uuid = UUID.timestamp_create
-      # @uuid = UUID.random_create
-      # @token = @uuid.to_s
+      @uuid = UUIDTools::UUID.timestamp_create
+      # @uuid = UUIDTools::UUID.random_create
+      @token = @uuid.to_s
       
-      @token = "{011e7e7f-5aa2-48f5-8cfc-7a1d28ac549c}"
+      # @token = "{011e7e7f-5aa2-48f5-8cfc-7a1d28ac549c}"
       if(authenticated)
         puts "...authenticated"        
         @rsp = ""      # Use current company file
@@ -157,28 +166,77 @@ class QbwcApiController < ApplicationController
       end
       @seconds_until_next_update = "#{5}"
       @seconds_between_runs = "#{24*60*60}"
-      puts "erb :authenticate"
-      puts "#{erb :authenticate}"
+      # puts "erb :authenticate"
+      # puts "#{erb :authenticate}"
       return erb :authenticate
       
     when 'sendRequestXML'
+#       @qbxml = <<-XML
+# <?xml version="1.0" ?>
+# <?qbxml version="5.0" ?>
+#   <QBXML>
+#     <QBXMLMsgsRq onError="continueOnError">
+#       <CustomerQueryRq requestID="1">
+#         <MaxReturned>10</MaxReturned>
+#         <IncludeRetElement>Name</IncludeRetElement>
+#       </CustomerQueryRq>
+#     </QBXMLMsgsRq>
+#   </QBXML>
+#   XML
       @qbxml = <<-XML
-  <?xml version="1.0" ?>
-  <?qbxml version="5.0" ?>
+<?xml version="1.0" ?>
+<?qbxml version="6.0"?>
   <QBXML>
-    <QBXMLMsgsRq onError="continueOnError">
-      <CustomerQueryRq requestID="1">
+    <QBXMLMsgsRq onError = "continueOnError">
+      <CustomerQueryRq requestID = "0">
         <MaxReturned>10</MaxReturned>
-        <IncludeRetElement>Name</IncludeRetElement>
       </CustomerQueryRq>
     </QBXMLMsgsRq>
-  </QBXML>
-  XML
+  </QBXML>  
+XML
+#       @qbxml = <<-XML
+# <?xml version="1.0" ?>
+# <?qbxml version="6.0"?>
+#   <QBXML>
+#     <QBXMLMsgsRq onError = "continueOnError">
+#       <CustomerQueryRq requestID = "0">
+#         <MaxReturned>10</MaxReturned>
+#         <ActiveStatus>ActiveOnly</ActiveStatus>
+#       </CustomerQueryRq>
+#     </QBXMLMsgsRq>
+#   </QBXML>  
+# XML
+      # puts "erb :sendRequestXML--"
+      # puts erb :sendRequestXML
+      # puts "--"
       return erb :sendRequestXML
     when 'receiveResponseXML'
-      (doc/'CustomerRet').each do |node|
-        puts "Customer: #{node.innerText.strip}"
+      puts ""
+      puts "========== #{api_call}  =========="
+      # puts xml.at("/soap:Envelope/soap:Body").first
+      # (doc/'CustomerRet').each do |node|
+      #   puts "Customer: #{node.innerText.strip}"
+      # end
+      # puts ::CGI::unescapeHTML xml.at("/soap:Envelope/soap:Body").first.to_s
+      response_xml_raw = xml.at("/soap:Envelope/soap:Body").first.to_s
+      response_xml = response_xml_raw.to_libxml_doc.root
+      # xmlroot.register_default_namespace("soap")
+      # puts "xxxxxxxxxxxxxxxx"
+      # puts response_xml.to_s
+      # puts response_xml.at("/receiveResponseXML/response").first
+      # puts response_xml.at("/receiveResponseXML")
+      req = response_xml
+      req.each do |node|
+        # puts "node.inner_xml"
+        # puts node.inner_xml
+        
+        if node.name == "response"
+          # puts node.name
+          puts "=="
+          puts ::CGI::unescapeHTML node.inner_xml
+        end
       end
+      puts "=="
       @result = 100
       return erb :receiveResponseXML
     when 'getLastError'
