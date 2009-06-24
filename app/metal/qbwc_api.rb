@@ -1,22 +1,18 @@
-# require 'rubygems'
-require 'sinatra'
-require 'hpricot'
 require "libxml-bindings"
 require 'fast_xs'
-# require 'fast_xs_extra'
 require 'uuidtools'
 
-# PE_PATH="#{RAILS_ROOT}/vendor/plugins/potion_extra"
-# set :views, "#{PE_PATH}/app/views/sinatra/qbwc_api"
-set :views, "#{PE_PATH}/app/views/qbwc"
-
+# Don't throw exception on nil.fast_xs
 class NilClass
   def fast_xs
     ''
   end
 end
-# im not been loaded! oh well
+
 class QbwcApi < Sinatra::Application
+
+  set :views, "#{PE_PATH}/app/views/qbwc"
+
   layout "admin"
   # before_filter :redirect_to_ssl
 
@@ -57,7 +53,7 @@ class QbwcApi < Sinatra::Application
   end
 
   get '/qbwc/api' do
-    content_type 'text/xml'
+    content_type 'text/html'
     erb :apiWelcome
   end
 
@@ -170,7 +166,23 @@ class QbwcApi < Sinatra::Application
       # puts "erb :authenticate"
       # puts "#{erb :authenticate}"
       return erb :authenticate
+
+      # Loop
+      # If the return from sendRequestXML is an empty string, QBWC stops the update and calls
+      # closeConnection. Otherwise, it passes the supplied string to the QuickBooks request processor to be
+      # handled. The string must be a valid qbXML request message.
       
+       # The data returned by Quickbooks in response to the incoming requests is supplied in the QBWC
+      # receiveResponseXML, in the response parameter. Your callback returns a negative integer if there
+      # are any errors, such as out of sequence calls due to network problems. Otherwise, it returns a
+      # positive integer between 0 and 100, indicating the percentage of work done up to that point, with a
+      # value of 100 meaning that the update activity is finished. If there is work left, then QBWC calls
+      # sendRequestXML again to allow your web service to continue its work.
+      
+       # If the return from receiveResponseXML is a negative integer, QBWC calls getLastError to allow
+      # your web service to supply some message string to inform the user. This message is displayed by
+      # QBWC and then QBWC invokes closeConnection to end the session.
+
     when 'sendRequestXML'
 #       @qbxml = <<-XML
 # <?xml version="1.0" ?>
