@@ -343,8 +343,6 @@ XML
     end
     # @orders = Order.paginate :page => (params[:page] || 1), :per_page => 100, :conditions => conditions, :order => 'order_time DESC'
     # @orders = Order.paginate :page => 1
-    # "Hello!"
-    "Bobble-head!"
   end
 
   get '/qbwc/hello/:name' do
