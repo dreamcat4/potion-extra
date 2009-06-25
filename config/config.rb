@@ -19,7 +19,7 @@ module PotionExtra
   def self.in_config
     return Proc.new do |config|
       # Rails::Initializer.run do |config|
-      
+
       config.plugin_locators << PotionExtraLocator    
       config.plugin_paths = ["#{PE_PATH}/vendor/plugins","#{RAILS_ROOT}/vendor/plugins"]
       # config.reload_plugins = true
@@ -29,6 +29,8 @@ module PotionExtra
       config.gem "sinatra"
       config.gem "libxml-bindings"
       config.gem "uuidtools"
+
+      config.middleware.use Rack::Reloader, 2 
       
     end
   end

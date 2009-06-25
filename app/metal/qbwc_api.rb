@@ -1,6 +1,8 @@
 require "libxml-bindings"
 require 'fast_xs'
 require 'uuidtools'
+require 'sinatra'
+# require 'reloader'
 
 # Don't throw exception on nil.fast_xs
 class NilClass
@@ -9,10 +11,37 @@ class NilClass
   end
 end
 
+# class Sinatra::Reloader < Rack::Reloader
+#   def safe_load(file, mtime, stderr = $stderr)
+#     if file == Sinatra::Application.app_file
+#       ::Sinatra::Application.reset!
+#       stderr.puts "#{self.class}: reseting routes"
+#     end
+#     super
+#   end
+# end
+
+# use Rack::Session::Memcache, :key => '_xxxx_session'
+set :app_file, "#{__FILE__}"
+# set :run, true 
+enable :reload
+# ::Sinatra::Application.reset!
+# stderr.puts "#{self.class}: reseting routes"
+
 class QbwcApi < Sinatra::Application
-
   set :views, "#{PE_PATH}/app/views/qbwc"
-
+  # set :run, true 
+  # Kernel.load Sinatra.options.app_file
+  # configure :development do
+    # use Sinatra::Reloader
+    # use Rack::Reloader
+  # end
+  
+  before do
+    ::Sinatra::Application.reset!    
+    # self.reset!    
+  end
+  
   layout "admin"
   # before_filter :redirect_to_ssl
 
@@ -52,6 +81,13 @@ class QbwcApi < Sinatra::Application
     return dir+"/"+xsd_file
   end
 
+  # Multiple URLs map to the same route/handler
+  # ["/foo", "/bar", "/baz"].each do |path|
+  #   get path do
+  #     "You've reached me at #{request.path_info}"
+  #   end
+  # end
+  
   get '/qbwc/api' do
     content_type 'text/html'
     erb :apiWelcome
@@ -279,6 +315,7 @@ XML
   end
 
   # get '/qbwc/orders/:query' do
+  # get '/qbwc/orssdsdsd' do
   get '/qbwc/orders' do
     # @message = 'Orders'
     
@@ -306,7 +343,8 @@ XML
     end
     # @orders = Order.paginate :page => (params[:page] || 1), :per_page => 100, :conditions => conditions, :order => 'order_time DESC'
     # @orders = Order.paginate :page => 1
-
+    # "Hello!"
+    "Bobble-head!"
   end
 
   get '/qbwc/hello/:name' do
