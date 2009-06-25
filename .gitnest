@@ -26,3 +26,6 @@ vendor/plugins/geokit-rails:
 vendor/plugins/quickbooks_integration_plugin: 
   branch: master
   url: git://github.com/zackchandler/quickbooks_integration_plugin.git
+vendor/plugins/rails-dev-boost: 
+  branch: master
+  url: git://github.com/Roman2K/rails-dev-boost

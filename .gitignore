@@ -12,3 +12,4 @@ vendor/plugins/dependencies
 vendor/plugins/quickbooks_integration_plugin
 vendor/plugins/generates_uuid
 vendor/gems-src/uuidtools
+vendor/plugins/rails-dev-boost
