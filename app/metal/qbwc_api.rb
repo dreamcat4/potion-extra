@@ -1,8 +1,8 @@
 require "libxml-bindings"
 require 'fast_xs'
 require 'uuidtools'
-require 'sinatra'
-# require 'reloader'
+
+require "qbxml"
 
 # Don't throw exception on nil.fast_xs
 class NilClass
@@ -11,87 +11,11 @@ class NilClass
   end
 end
 
-# class Sinatra::Reloader < Rack::Reloader
-#   def safe_load(file, mtime, stderr = $stderr)
-#     if file == Sinatra::Application.app_file
-#       ::Sinatra::Application.reset!
-#       stderr.puts "#{self.class}: reseting routes"
-#     end
-#     super
-#   end
-# end
-
-# use Rack::Session::Memcache, :key => '_xxxx_session'
-set :app_file, "#{__FILE__}"
-# set :run, true 
-enable :reload
-# ::Sinatra::Application.reset!
-# stderr.puts "#{self.class}: reseting routes"
-
 class QbwcApi < Sinatra::Application
   set :views, "#{PE_PATH}/app/views/qbwc"
-  # set :run, true 
-  # Kernel.load Sinatra.options.app_file
-  # configure :development do
-    # use Sinatra::Reloader
-    # use Rack::Reloader
-  # end
   
-  before do
-    ::Sinatra::Application.reset!    
-    # self.reset!    
-  end
-  
-  layout "admin"
+  # layout "admin"
   # before_filter :redirect_to_ssl
-
-  def qbxml_xsd_file( region="A", version="8.0", \
-                      dir="#{RAILS_ROOT}/vendor/plugins/potion_extra/app/views/xsd" )    
-    # Please note: File names and locations may change in future
-    
-    # 1. Install QuickBooks SDK (requires Windows/PC environment)
-    # http://www.consolibyte.com/wiki/doku.php/quickbooks_links
-    
-    # 2. Copy all the .xsd files from validator directory (17.4 MB)
-    # C:/Program Files/Intuit/IDN/Common/tools/validator/
-    # http://consolibyte.com/wiki/doku.php/quickbooks_qbxml
-    # http://www.consolibyte.com/wiki/doku.php?id=quickbooks_example_qbxml
-    
-    # 3. Important files are:
-    # QWC.xsd          - The schema for your .qwc configuration file
-    # qbxmltypes80.xsd - Data types used by qbwc, such as BOOL and FLOAT
-    # qbxml80.xsd      - The main qbwc xml soap schema ! 
-
-    # You should use a regional variant (because of changes to AddCustomer, mainly)    
-    # Valid regions are:
-    # A = United States
-    # C = Canada
-    # U = United Kingdom
-    # O = Online (not tested)
-    # nil = Not region specific (not tested)
-    
-    version = version.to_f*10.to_i.to_s
-    
-    if (region)
-      xsd_file = "QB#{region}qbxml#{version}.xsd"
-    else
-      xsd_file = "qbxml#{version}.xsd"
-    end
-    
-    return dir+"/"+xsd_file
-  end
-
-  # Multiple URLs map to the same route/handler
-  # ["/foo", "/bar", "/baz"].each do |path|
-  #   get path do
-  #     "You've reached me at #{request.path_info}"
-  #   end
-  # end
-  
-  get '/qbwc/api' do
-    content_type 'text/html'
-    erb :apiWelcome
-  end
 
   post '/qbwc/api' do
     content_type 'text/xml'
@@ -182,140 +106,73 @@ class QbwcApi < Sinatra::Application
         end
       end
       
-      @uuid = UUIDTools::UUID.timestamp_create
+      # @token = "{011e7e7f-5aa2-48f5-8cfc-7a1d28ac549c}"
       # @uuid = UUIDTools::UUID.random_create
+      @uuid = UUIDTools::UUID.timestamp_create
       @token = @uuid.to_s
       
-      # @token = "{011e7e7f-5aa2-48f5-8cfc-7a1d28ac549c}"
       if(authenticated)
-        puts "...authenticated"        
-        @rsp = ""      # Use current company file
-        # @rsp = "company_file" # Use this named company file
-        # @rsp = "none"  # No further response / no further action required
+        puts "...authenticated"
+        
+        if Qbxml::client_needs_update?
+          # @rsp = "company_file" # Update specific named company file
+          @rsp = ""      # Use current/open authorized company file 
+        else
+          @rsp = "none"  # No further response / no further action required
+        end
+        
       else
         puts "...not valid user"
         @rsp = "nvu"   # Not valid user
         # erb :connectionError
       end
       @seconds_until_next_update = "#{5}"
-      @seconds_between_runs = "#{24*60*60}"
-      # puts "erb :authenticate"
-      # puts "#{erb :authenticate}"
+      # @seconds_between_runs = "#{24*60*60}"
       return erb :authenticate
 
-      # Loop
-      # If the return from sendRequestXML is an empty string, QBWC stops the update and calls
-      # closeConnection. Otherwise, it passes the supplied string to the QuickBooks request processor to be
-      # handled. The string must be a valid qbXML request message.
-      
-       # The data returned by Quickbooks in response to the incoming requests is supplied in the QBWC
-      # receiveResponseXML, in the response parameter. Your callback returns a negative integer if there
-      # are any errors, such as out of sequence calls due to network problems. Otherwise, it returns a
-      # positive integer between 0 and 100, indicating the percentage of work done up to that point, with a
-      # value of 100 meaning that the update activity is finished. If there is work left, then QBWC calls
-      # sendRequestXML again to allow your web service to continue its work.
-      
-       # If the return from receiveResponseXML is a negative integer, QBWC calls getLastError to allow
-      # your web service to supply some message string to inform the user. This message is displayed by
-      # QBWC and then QBWC invokes closeConnection to end the session.
-
     when 'sendRequestXML'
-#       @qbxml = <<-XML
-# <?xml version="1.0" ?>
-# <?qbxml version="5.0" ?>
-#   <QBXML>
-#     <QBXMLMsgsRq onError="continueOnError">
-#       <CustomerQueryRq requestID="1">
-#         <MaxReturned>10</MaxReturned>
-#         <IncludeRetElement>Name</IncludeRetElement>
-#       </CustomerQueryRq>
-#     </QBXMLMsgsRq>
-#   </QBXML>
-#   XML
-      @qbxml = <<-XML
-<?xml version="1.0" ?>
-<?qbxml version="6.0"?>
-  <QBXML>
-    <QBXMLMsgsRq onError = "continueOnError">
-      <CustomerQueryRq requestID = "0">
-        <MaxReturned>10</MaxReturned>
-      </CustomerQueryRq>
-    </QBXMLMsgsRq>
-  </QBXML>  
-XML
-#       @qbxml = <<-XML
-# <?xml version="1.0" ?>
-# <?qbxml version="6.0"?>
-#   <QBXML>
-#     <QBXMLMsgsRq onError = "continueOnError">
-#       <CustomerQueryRq requestID = "0">
-#         <MaxReturned>10</MaxReturned>
-#         <ActiveStatus>ActiveOnly</ActiveStatus>
-#       </CustomerQueryRq>
-#     </QBXMLMsgsRq>
-#   </QBXML>  
-# XML
-      # puts "erb :sendRequestXML--"
+      @qbxml = Qbxml::next_request
+      puts "========== #{api_call}  =========="
       # puts erb :sendRequestXML
       # puts "--"
       return erb :sendRequestXML
     when 'receiveResponseXML'
       puts ""
       puts "========== #{api_call}  =========="
-      # puts xml.at("/soap:Envelope/soap:Body").first
-      # (doc/'CustomerRet').each do |node|
-      #   puts "Customer: #{node.innerText.strip}"
-      # end
-      # puts ::CGI::unescapeHTML xml.at("/soap:Envelope/soap:Body").first.to_s
-      response_xml_raw = xml.at("/soap:Envelope/soap:Body").first.to_s
-      response_xml = response_xml_raw.to_libxml_doc.root
-      # xmlroot.register_default_namespace("soap")
-      # puts "xxxxxxxxxxxxxxxx"
-      # puts response_xml.to_s
-      # puts response_xml.at("/receiveResponseXML/response").first
-      # puts response_xml.at("/receiveResponseXML")
-      req = response_xml
-      req.each do |node|
-        # puts "node.inner_xml"
-        # puts node.inner_xml
-        
-        if node.name == "response"
-          # puts node.name
-          puts "=="
-          puts ::CGI::unescapeHTML node.inner_xml
-        end
-      end
-      puts "=="
-      @result = 100
+      Qbxml::receive_response xml
+      @result = Qbxml::percent_done
       return erb :receiveResponseXML
+      
+    # Error conditions & wrap-up
     when 'getLastError'
-      @message = 'An error occurred'
+      # Show error message to user and end session
+      @message = Qbxml::error_msg
       return erb :getLastError
     when 'connectionError'
+      # Qbwc on client side couldnt' launch Quickbooks. End session.
       @message = 'done'
       return erb :connectionError
     when 'closeConnection'
+      # End session
       @message = 'OK'
       return erb :closeConnection
     else
-      ''
+      content_type 'text/html'
+      return erb :apiWelcome
     end
     
   end
 
-  get '/qbwc/lorem' do
-    # return "Home page - qbwc api"
-    return "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  end
-
-  get '/qbwc/api/error' do
-    @message = 'An error occurred'
-    puts "#{erb :getLastError}"
-    erb :getLastError
+  # We need a valid 'get' for qbwc client to download the SSL Server Certificate
+  # Qbwc calls get only on the url "/qbwc/api", but include others here also 
+  ["/qbwc/?", "/qbwc/api/?"].each do |path|
+    get path do
+      content_type 'text/html'
+      return erb :apiWelcome
+    end
   end
 
   # get '/qbwc/orders/:query' do
-  # get '/qbwc/orssdsdsd' do
   get '/qbwc/orders' do
     # @message = 'Orders'
     
