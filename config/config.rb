@@ -29,7 +29,8 @@ module PotionExtra
       config.gem "sinatra"
       config.gem "libxml-bindings"
       config.gem "uuidtools"
-
+      config.gem "state_machine"
+      
       config.middleware.use Rack::Reloader, 2 
       
     end
