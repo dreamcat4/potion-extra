@@ -139,14 +139,19 @@ class QbwcApi < Sinatra::Application
     when 'receiveResponseXML'
       puts ""
       puts "========== #{api_call}  =========="
+      # puts xml.at("/soap:Envelope/soap:Body").first
       Qbxml::receive_response xml
       @result = Qbxml::percent_done
+      # puts "--"
       return erb :receiveResponseXML
       
     # Error conditions & wrap-up
     when 'getLastError'
+      puts ""
+      puts "========== #{api_call}  =========="
       # Show error message to user and end session
       @message = Qbxml::error_msg
+      puts @message
       return erb :getLastError
     when 'connectionError'
       # Qbwc on client side couldnt' launch Quickbooks. End session.

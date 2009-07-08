@@ -1,0 +1,188 @@
+== original ==
+<CustomerRet>
+<ListID>80000002-1245792458</ListID>
+<TimeCreated>2009-06-23T23:27:38+01:00</TimeCreated>
+<TimeModified>2009-06-23T23:27:38+01:00</TimeModified>
+<EditSequence>1245792458</EditSequence>
+<Name>Test Customer</Name>
+<FullName>Test Customer</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<CompanyName>AMCE Corp</CompanyName>
+<Salutation>Mr</Salutation>
+<FirstName>Ant</FirstName>
+<LastName>Eater</LastName>
+<BillAddress>
+<Addr1>AMCE Corp</Addr1>
+<Addr2>Ant Eater</Addr2>
+<Addr3>1 Ardvaark Road</Addr3>
+<Addr4>Yellowstone Valley</Addr4>
+<State>AZ</State>
+<PostalCode>12345</PostalCode>
+<Country>USA</Country>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>AMCE Corp</Addr1>
+<Addr2>Ant Eater</Addr2>
+<Addr3>1 Ardvaark Road</Addr3>
+<Addr4>Yellowstone Valley</Addr4>
+<Addr5>, AZ 12345 US</Addr5>
+</BillAddressBlock>
+<Email>ant.eater@amce.com</Email>
+<Contact>Ant Eater</Contact>
+<Balance>1000,00</Balance>
+<TotalBalance>1000,00</TotalBalance>
+<SalesTaxCountry>United States</SalesTaxCountry>
+<JobStatus>None</JobStatus>
+</CustomerRet>
+== original - no nested ==
+<CustomerRet>
+<ListID>80000002-1245792458</ListID>
+<TimeCreated>2009-06-23T23:27:38+01:00</TimeCreated>
+<TimeModified>2009-06-23T23:27:38+01:00</TimeModified>
+<EditSequence>1245792458</EditSequence>
+<Name>Test Customer</Name>
+<FullName>Test Customer</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<CompanyName>AMCE Corp</CompanyName>
+<Salutation>Mr</Salutation>
+<FirstName>Ant</FirstName>
+<LastName>Eater</LastName>
+<Email>ant.eater@amce.com</Email>
+<Contact>Ant Eater</Contact>
+<Balance>1000,00</Balance>
+<TotalBalance>1000,00</TotalBalance>
+<SalesTaxCountry>United States</SalesTaxCountry>
+<JobStatus>None</JobStatus>
+</CustomerRet>
+==
+== .to_qbxml :camelize => true, :skip_types => true, :skip_instruct => true 
+<Customer>
+  <AccountNumber>limit99</AccountNumber>
+  <AltContact>limit41</AltContact>
+  <AltPhone>limit21</AltPhone>
+  <Balance>1000.0</Balance>
+  <CompanyName>AMCE Corp</CompanyName>
+  <Contact>Ant Eater</Contact>
+  <CreditCardInfoExpirationMonth nil="true"></CreditCardInfoExpirationMonth>
+  <CreditCardInfoExpirationYear nil="true"></CreditCardInfoExpirationYear>
+  <CreditLimit>0.0</CreditLimit>
+  <DeliveryMethod nil="true"></DeliveryMethod>
+  <EditSequence>1245792458</EditSequence>
+  <Email>ant.eater@amce.com</Email>
+  <FirstName>Ant</FirstName>
+  <FullName>Test Customer</FullName>
+  <IsActive>true</IsActive>
+  <IsStatementWithParent nil="true"></IsStatementWithParent>
+  <JobEndDate nil="true"></JobEndDate>
+  <JobProjectedEndDate nil="true"></JobProjectedEndDate>
+  <JobStartDate nil="true"></JobStartDate>
+  <JobStatus>None</JobStatus>
+  <LastName>Eater</LastName>
+  <ListId>80000002-1245792458</ListId>
+  <Name>Test Customer</Name>
+  <ParentRefFullName nil="true"></ParentRefFullName>
+  <SalesTaxCountry>United States</SalesTaxCountry>
+  <Salutation>Mr</Salutation>
+  <Sublevel>0</Sublevel>
+  <Suffix nil="true"></Suffix>
+  <TimeCreated>2009-06-23T23:27:38+01:00</TimeCreated>
+  <TimeModified>2009-06-23T23:27:38+01:00</TimeModified>
+  <TotalBalance>1000.0</TotalBalance>
+</Customer>
+== .to_xml (default)
+<?xml version="1.0" encoding="UTF-8"?>
+<customer>
+  <account-number>limit99</account-number>
+  <alt-contact>limit41</alt-contact>
+  <alt-phone>limit21</alt-phone>
+  <balance type="decimal">1000.0</balance>
+  <bill-address-addr1>AMCE Corp</bill-address-addr1>
+  <bill-address-addr2>Ant Eater</bill-address-addr2>
+  <bill-address-addr3>1 Ardvaark Road</bill-address-addr3>
+  <bill-address-addr4>Yellowstone Valley</bill-address-addr4>
+  <bill-address-addr5>limit41</bill-address-addr5>
+  <bill-address-block-addr1>AMCE Corp</bill-address-block-addr1>
+  <bill-address-block-addr2>Ant Eater</bill-address-block-addr2>
+  <bill-address-block-addr3>1 Ardvaark Road</bill-address-block-addr3>
+  <bill-address-block-addr4>Yellowstone Valley</bill-address-block-addr4>
+  <bill-address-block-addr5>, AZ 12345 US</bill-address-block-addr5>
+  <bill-address-city>limit31</bill-address-city>
+  <bill-address-country>USA</bill-address-country>
+  <bill-address-note>limit41</bill-address-note>
+  <bill-address-postal-code>12345</bill-address-postal-code>
+  <bill-address-state>AZ</bill-address-state>
+  <company-name>AMCE Corp</company-name>
+  <contact>Ant Eater</contact>
+  <credit-card-info-credit-card-address>limit41</credit-card-info-credit-card-address>
+  <credit-card-info-credit-card-number>limit25</credit-card-info-credit-card-number>
+  <credit-card-info-credit-card-postal-code>limit41</credit-card-info-credit-card-postal-code>
+  <credit-card-info-expiration-month type="integer" nil="true"></credit-card-info-expiration-month>
+  <credit-card-info-expiration-year type="integer" nil="true"></credit-card-info-expiration-year>
+  <credit-card-info-name-on-card>limit41</credit-card-info-name-on-card>
+  <credit-limit type="decimal">0.0</credit-limit>
+  <customer-type-ref-full-name>limit159</customer-type-ref-full-name>
+  <customer-type-ref-list-id>limit36</customer-type-ref-list-id>
+  <delivery-method nil="true"></delivery-method>
+  <edit-sequence>1245792458</edit-sequence>
+  <email>ant.eater@amce.com</email>
+  <fax>limit21</fax>
+  <first-name>Ant</first-name>
+  <full-name>Test Customer</full-name>
+  <is-active type="boolean">true</is-active>
+  <is-statement-with-parent type="boolean" nil="true"></is-statement-with-parent>
+  <item-sales-tax-ref-full-name>limit31</item-sales-tax-ref-full-name>
+  <item-sales-tax-ref-list-id>limit36</item-sales-tax-ref-list-id>
+  <job-desc>limit99</job-desc>
+  <job-end-date type="datetime" nil="true"></job-end-date>
+  <job-projected-end-date type="datetime" nil="true"></job-projected-end-date>
+  <job-start-date type="datetime" nil="true"></job-start-date>
+  <job-status>None</job-status>
+  <job-type-ref-full-name>limit159</job-type-ref-full-name>
+  <job-type-ref-list-id>limit36</job-type-ref-list-id>
+  <last-name>Eater</last-name>
+  <list-id>80000002-1245792458</list-id>
+  <middle-name>limit5</middle-name>
+  <mobile>limit21</mobile>
+  <name>Test Customer</name>
+  <notes>limit4095</notes>
+  <pager>limit21</pager>
+  <parent-ref-full-name nil="true"></parent-ref-full-name>
+  <parent-ref-list-id>limit36</parent-ref-list-id>
+  <phone>limit21</phone>
+  <preferred-payment-method-ref-full-name>limit31</preferred-payment-method-ref-full-name>
+  <preferred-payment-method-ref-list-id>limit36</preferred-payment-method-ref-list-id>
+  <price-level-ref-full-name>limit31</price-level-ref-full-name>
+  <price-level-ref-list-id>limit36</price-level-ref-list-id>
+  <print-as>limit41</print-as>
+  <resale-number>limit21</resale-number>
+  <sales-rep-ref-full-name>limit5</sales-rep-ref-full-name>
+  <sales-rep-ref-list-id>limit36</sales-rep-ref-list-id>
+  <sales-tax-code-ref-full-name>limit3</sales-tax-code-ref-full-name>
+  <sales-tax-code-ref-list-id>limit36</sales-tax-code-ref-list-id>
+  <sales-tax-country>United States</sales-tax-country>
+  <salutation>Mr</salutation>
+  <ship-address-addr1>limit41</ship-address-addr1>
+  <ship-address-addr2>limit41</ship-address-addr2>
+  <ship-address-addr3>limit41</ship-address-addr3>
+  <ship-address-addr4>limit41</ship-address-addr4>
+  <ship-address-addr5>limit41</ship-address-addr5>
+  <ship-address-block-addr1>limit41</ship-address-block-addr1>
+  <ship-address-block-addr2>limit41</ship-address-block-addr2>
+  <ship-address-block-addr3>limit41</ship-address-block-addr3>
+  <ship-address-block-addr4>limit41</ship-address-block-addr4>
+  <ship-address-block-addr5>limit41</ship-address-block-addr5>
+  <ship-address-city>limit31</ship-address-city>
+  <ship-address-country>limit31</ship-address-country>
+  <ship-address-note>limit41</ship-address-note>
+  <ship-address-postal-code>limit13</ship-address-postal-code>
+  <ship-address-state>limit21</ship-address-state>
+  <sublevel type="integer">0</sublevel>
+  <suffix nil="true"></suffix>
+  <terms-ref-full-name>limit31</terms-ref-full-name>
+  <terms-ref-list-id>limit36</terms-ref-list-id>
+  <time-created type="datetime">2009-06-23T23:27:38+01:00</time-created>
+  <time-modified type="datetime">2009-06-23T23:27:38+01:00</time-modified>
+  <total-balance type="decimal">1000.0</total-balance>
+</customer>
